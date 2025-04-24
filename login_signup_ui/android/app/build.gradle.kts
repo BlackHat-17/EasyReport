@@ -5,9 +5,9 @@ plugins {
 }
 
 android {
-    namespace = "com.TechNudge.EasyReport"
+    namespace = "com.example.EasyReport"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "27.0.12077973"
+    ndkVersion = "29.0.13113456"
 
 
 
@@ -21,7 +21,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.TechNudge.EasyReport"
+        applicationId = "com.example.EasyReport"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

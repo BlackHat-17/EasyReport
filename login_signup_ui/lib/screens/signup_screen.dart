@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import '../widgets/background.dart';
 import '../widgets/custom_input_field.dart';
 import '../widgets/responsive.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignupScreen extends StatelessWidget {
-  const SignupScreen({super.key});
+  SignupScreen({super.key});
+
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +22,7 @@ class SignupScreen extends StatelessWidget {
               desktop: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(child: FlutterLogo(size: 200)),
+                  const Expanded(child: FlutterLogo(size: 200)),
                   Expanded(child: signupForm(context)),
                 ],
               ),
@@ -35,20 +40,52 @@ class SignupScreen extends StatelessWidget {
         children: [
           const Text('Sign Up', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
           const SizedBox(height: 24),
-          const CustomInputField(hintText: 'Username'),
-          const CustomInputField(hintText: 'Email'),
-          const CustomInputField(hintText: 'Password', obscureText: true),
-          const SizedBox(height: 24),
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text('Sign Up'),
+          CustomInputField(
+            hintText: 'Username',
+            controller: usernameController,
           ),
+          CustomInputField(
+            hintText: 'Email',
+            controller: emailController,
+          ),
+          CustomInputField(
+            hintText: 'Password',
+            obscureText: true,
+            controller: passwordController,
+          ),
+          const SizedBox(height: 24),
+         
+
+ElevatedButton(
+  onPressed: () async {
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      
+      print("✅ Signed up: ${userCredential.user?.email}");
+      
+      // Navigate to dashboard or home
+      Navigator.pushReplacementNamed(context, '/dashboard');
+    } on FirebaseAuthException catch (e) {
+      String message = '❌ Signup failed';
+
+      if (e.code == 'weak-password') {
+        message = 'Password is too weak.';
+      } else if (e.code == 'email-already-in-use') {
+        message = 'This email is already registered.';
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    }
+  },
+  child: const Text('Sign Up'),
+),
           TextButton(
             onPressed: () => Navigator.pushNamed(context, '/login'),
             child: const Text('Already have an account? Login'),
-
-
-             
           ),
         ],
       ),

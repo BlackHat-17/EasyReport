@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
    import '../components/translator.dart';
    import '../components/resource.dart';
    import '../components/geo_suggestions.dart';
-   import '../components/voice_assistance.dart';
+  //  import '../components/voice_assistance.dart';
    import '../components/language_selector.dart';
 
    class Dashboard extends StatefulWidget {
@@ -76,7 +76,7 @@ import 'package:flutter/material.dart';
                  ),
                const Resources(),
                const GeoSuggestions(),
-               const VoiceAssistant(),
+              //  const VoiceAssistant(),
                LanguageSelector(onLanguageChanged: _onLanguageChanged),
              ],
            ),
